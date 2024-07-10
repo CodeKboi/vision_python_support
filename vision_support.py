@@ -54,7 +54,8 @@ def abort(filebase="C:/"):
     f.close()
 def clear_last_run(filebase="C:/"):
     '''
-    Clears any signalling files from File Start/Abort
+    Clears the directory C:/DataSets/StartTest/ by default
+    Preferably run at the start of the script
 
     Parameters
     ----------
@@ -66,12 +67,16 @@ def clear_last_run(filebase="C:/"):
     None.
 
     '''
-    file_path = filebase+"DataSets/StartTest/Start.txt"
-    if os.path.exists(file_path):
-        os.remove(file_path)
-    file_path = filebase+"DataSets/StartTest/Abort.txt"
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    directory = filebase+"DataSets/StartTest/"
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        try:
+            if os.path.isfile(file_path):
+                # Delete file
+                os.remove(file_path)
+                
+        except Exception as e:
+            print(f"Failed to delete {file_path}. Reason: {e}")
     
 def s2m(file_path,sleep_time=1):
     '''
